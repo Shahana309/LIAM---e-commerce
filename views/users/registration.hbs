@@ -1,0 +1,72 @@
+<div class="login-register-area pt-20 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a data="tab" href="/login">
+                            <h4> login </h4>
+                        </a>
+                        <a class="active" data-toggle="tab" href="#">
+                            <h4> sign up </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <form action="/register" method="post">
+
+
+                                        <span id="name-error" class="disappear"></span>
+                                        <input type="text" name="name" placeholder="Name" id="name"
+                                            onkeyup="validateName()" >
+
+
+                                        <span id="email-error" class="disappear"></span>
+                                        <input name="email" placeholder="email" type="Email" id="email"
+                                            onkeyup=" validateEmail()" >
+
+                                        <span id="phone-error" class="disappear"></span>
+                                        <input type="text" name="mobile" placeholder="Mobile Number" id="phone"
+                                            onkeyup=" validatePhone()" >
+
+
+                                        <span id="pw1-error" class="disappear"></span>
+                                        <input type="password" name="password" placeholder="Password" id="password1"
+                                            onkeyup="validatePassword()" >
+
+                                        <span id="confirm-error" class="disappear"></span>
+                                        <input type="password" placeholder="Confirm Password" id="password2"
+                                            onkeyup="validateConfirmPwd()">
+
+                                        <input type="checkbox" onclick="myFunction()"><label for="">Show
+                                            Password</label>
+
+                                        <div class="button-box">
+                                            <button onclick="return validateForm()" type="submit">Register</button>
+                                            <br><span id="submit-error"></span>
+                                             {{#if message}}
+                                        <div class="alert alert-success" role="alert">
+                                            <span class="text-success font-weight-bold disappear">{{message}}</span>
+                                        </div>
+                                        {{else if error}}
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="text-danger font-weight-bold disappear">{{error}}</span>
+                                        </div>
+                                        {{/if}}
+                                            <br>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

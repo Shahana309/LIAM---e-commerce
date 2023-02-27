@@ -1,0 +1,176 @@
+<!-- index body start -->
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- chart caard section start -->
+            <div class="col-sm-6 col-xxl-3 col-lg-6">
+                <div class="main-tiles border-5 border-0  card-hover card o-hidden">
+                    <div class="custome-1-bg b-r-4 card-body">
+                        <div class="media align-items-center static-top-widget">
+                            <div class="media-body p-0">
+                                <span class="m-0">Total Revenue</span>
+                                <h4 class="mb-0 counter">{{totalRevenue}}
+                                   <a href="/admin/sales-report"><span class="badge badge-light-primary grow">
+                                      Revenue </span></a> 
+                                </h4>
+                            </div>
+                            <div class="align-self-center text-center">
+                                <i class="ri-database-2-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xxl-3 col-lg-6">
+                <div class="main-tiles border-5 card-hover border-0 card o-hidden">
+                    <div class="custome-2-bg b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="media-body p-0">
+                                <span class="m-0">Total Orders</span>
+                                <h4 class="mb-0 counter">{{totalOrders}}
+                                    <a href="/admin/orders"><span class="badge badge-light-danger grow">
+                                      Orders </span></a>
+                                </h4>
+                            </div>
+                            <div class="align-self-center text-center">
+                                <i class="ri-shopping-bag-3-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xxl-3 col-lg-6">
+                <div class="main-tiles border-5 card-hover border-0  card o-hidden">
+                    <div class="custome-3-bg b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="media-body p-0">
+                                <span class="m-0">Total Products</span>
+                                <h4 class="mb-0 counter">{{totalProducts}}
+                                    <a href="/admin/add-products" class="badge badge-light-secondary grow">
+                                        ADD NEW</a>
+                                </h4>
+                            </div>
+
+                            <div class="align-self-center text-center">
+                                <i class="ri-chat-3-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xxl-3 col-lg-6">
+                <div class="main-tiles border-5 card-hover border-0 card o-hidden">
+                    <div class="custome-4-bg b-r-4 card-body">
+                        <div class="media static-top-widget">
+                            <div class="media-body p-0">
+                                <span class="m-0">Total Customers</span>
+                                <h4 class="mb-0 counter">{{totalUsers}}
+                                    <a href="/admin/all-users "><span class="badge badge-light-success grow"> 
+                                        </span></a>
+                                </h4>  
+                            </div>
+
+                            <div class="align-self-center text-center">
+                                <i class="ri-user-add-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Earning chart star-->
+            <div class="col-xl-6">
+                <div class="card o-hidden card-hover">
+                    <div class="card-header border-0 pb-1">
+                        <div class="card-header-title">
+                            <h4>Revenue Report</h4>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="report-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Earning chart  end-->
+
+
+            <!-- Best Selling Product Start -->
+            <div class="col-6 ">
+                <div class="row">
+                    <div class="col-12 d-flex">
+                        <center>
+                <label for="From">From&nbsp;</label>:&nbsp;<input type="date" id="fromDate">&nbsp;&nbsp;&nbsp;&nbsp;
+                <label for="To">To&nbsp;</label>:&nbsp;<input type="date" id="toDate">
+                <button id="timesearch" class="btn btn-dark m-0 pt-0" style="height: 26px;margin-left: 20px;!important">search</button>
+                </center>
+                    </div>
+                    <div class="col-8">
+                        <canvas id="searchSalesChart" style="width: 100px;!important;"></canvas>
+                    </div>
+                </div>
+
+                {{!-- <div class="card o-hidden card-hover">
+                    <div class="card-header border-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="card-header-title">
+                                <h4>Category Revenue </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="pie-chart-visitors"></div>
+                    </div>
+                </div> --}}
+            
+        
+            </div>
+            <!-- Best Selling Product End -->
+            
+    </div>
+    <!-- Container-fluid Ends-->
+</div>
+<!-- index body end -->
+<script>
+        const button = document.getElementById('timesearch')  
+        button.addEventListener("click",function(){
+            const fromDate = document.getElementById('fromDate').value
+            const toDate = document.getElementById('toDate').value
+            console.log(fromDate)
+            console.log(toDate)
+
+            fetch('/admin/timeSearch',{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    from:fromDate,
+                    to:toDate
+                })
+            })
+            .then(response => response.json())
+            .then(data => {    
+                // Step 3: Initialize the chart
+                const searched = document.getElementById('searchSalesChart')
+                const chart = new Chart(searched, {
+                    type: 'pie',
+                    data:{
+                        labels:data.category,
+                        datasets:[
+                            {
+                                data:data.count,
+                                label:'Revenue',
+                                
+                            }
+                        ]
+                    },
+                });
+                // Step 4: Update the chart
+                chart.update();
+            });        
+        })
+    </script>

@@ -1,0 +1,96 @@
+<div class="breadcrumb-area bg-gray menuBarTop">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/account">Account</a>
+                </li>
+                <li class="active">Edit Address</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<form id="" action="/update-address" method="post">
+    <div class="checkout-wrap pt-20">
+
+        <div class="row">
+
+            <div class="col-lg-6 mx-auto">
+                <div class="billing-info-wrap mr-50">
+
+                    <h3>Change Address</h3>
+                    
+                    <div class="row">
+                        <input type="text" name="ArrayIndex" value="{{userData.position}}" hidden>
+
+                        <div class="col-lg-12 col-md-12">
+                            <div class="billing-info mb-20 form-floating">
+                                <input type="text" name="Name" value="{{userData.Name}}" class="form-control" id="floatingName"
+                                    placeholder=".">
+                                <label for="floatingName">Your Name </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="billing-info mb-20 form-floating">
+
+                                <input name="Number" value="{{userData.Number}}" placeholder="." type="text" class="form-control"
+                                    id="1">
+                                <label for="1">Enter your phone number.</label>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="billing-info mb-20 form-floating">
+                                <input name="City" value="{{userData.City}}" placeholder="." type="text" class="form-control"
+                                    id="1">
+                                <label for="1">Town / City</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="billing-info mb-20 form-floating">
+                                <input name="State" value="{{userData.State}}" placeholder="." type="text" class="form-control"
+                                    id="1">
+                                <label for="1">State</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="billing-info mb-20 form-floating">
+                                <input name="Country" value="{{userData.Country}}" placeholder="." type="text"
+                                    class="form-control" id="1">
+                                <label for="1">Country</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="billing-info mb-20 form-floating">
+                                <input name="Pincode" value="{{userData.Pincode}}" placeholder="." type="text"
+                                    class="form-control" id="1">
+                                <label for="1">Post Code / ZIP</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="billing-info mb-20 form-floating">
+                                <input name="address" value="{{userData.address}}" placeholder="." type="text"
+                                    class="form-control" id="1">
+                                <label for="1">Address</label>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button class="btn btn-primary " type="submit">Submit</button>
+                            <button class="btn btn-primary " type="reset">Reset</button>
+                            <button class="btn btn-primary " onclick="history.back()">Cancel</button>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>

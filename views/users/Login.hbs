@@ -1,0 +1,50 @@
+<div class="login-register-area pt-20 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a class="active" data-toggle="tab" href="#lg1">
+                            <h4> login </h4>
+                        </a>
+                        <a data="tab" href="/register">
+                            <h4> sign up </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <form action="/login" method="post">
+                                        <input type="text" name="email" placeholder="Email / Mobile Number">
+                                        <input type="password" name="password" placeholder="Password" id="pw"> <br>
+
+                                        <input type="checkbox" onclick="myFunction2()">Show Password
+                                        {{#if message}}
+                                        <div class="alert alert-success" role="alert">
+                                            <span class="text-success font-weight-bold disappear">{{message}}</span>
+                                        </div>
+                                        {{else if error}}
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="text-danger font-weight-bold disappear">{{error}}</span>
+                                        </div>
+                                        {{/if}}
+                                        <div class="button-box">
+                                            <div class="login-toggle-btn">
+                                                {{!-- <input type="checkbox"> --}}
+                                                {{!-- <label>Remember me</label> --}}
+                                                <a href="/forget">Forgot Password?</a>
+                                            </div>
+                                            <button type="submit">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

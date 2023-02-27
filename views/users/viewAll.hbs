@@ -1,0 +1,971 @@
+<style>
+    /* --- fillter */
+
+    .range-slider {
+        padding-top: 3.5em;
+        position: relative;
+        text-align: center;
+    }
+
+    .range-slider::before,
+    .range-slider::after {
+        content: " ";
+        display: table;
+    }
+
+    .range-slider::after {
+        clear: both;
+    }
+
+    .range-slider .track {
+        bottom: 15px;
+        height: 6px;
+        left: 0;
+        margin-bottom: -3px;
+        position: absolute;
+        width: 0;
+        z-index: 50;
+        border-radius: 15px;
+    }
+
+    .range-slider .track--full {
+        background: #cccccc;
+        width: 100%;
+    }
+
+    .range-slider .track--included {
+        background: #f26522;
+        border-radius: 3px;
+    }
+
+    .range-slider .slider-thumb {
+        background: #463a3e;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        display: inline-block;
+        height: 20px;
+        left: 0;
+        position: absolute;
+        width: 20px;
+        z-index: 101;
+    }
+
+    .range-slider [type=range] {
+        -webkit-appearance: media-slider;
+        background: none;
+        height: 25px;
+        margin: 0;
+        outline: none;
+        padding: 0;
+        pointer-events: none;
+        position: relative;
+        width: 100%;
+        z-index: 75;
+    }
+
+    .range-slider [type=range]:focus {
+        outline: none;
+    }
+
+    .range-slider [type=range]::-moz-focus-outer {
+        border: 0;
+    }
+
+    .range-slider [type=range]:first-of-type {
+        float: left;
+        margin-bottom: -30px;
+    }
+
+    .range-slider [type=range]:last-of-type {
+        float: right;
+        margin-bottom: 0;
+    }
+
+    .range-slider [type=range]::-webkit-slider-runnable-track {
+        background: none;
+        border: 0;
+        height: 6px;
+        z-index: -1;
+    }
+
+    .range-slider [type=range]::-ms-fill-lower {
+        background: none;
+        border: 0;
+    }
+
+    .range-slider [type=range]::-ms-fill-upper {
+        background: none;
+        border: 0;
+    }
+
+    .range-slider [type=range]::-ms-track {
+        background: transparent;
+        border: 0;
+        border-color: transparent;
+        color: transparent;
+        height: 6px;
+        z-index: -1;
+    }
+
+    .range-slider [type=range]:focus::-ms-fill-lower {
+        background: none;
+        border: 0;
+    }
+
+    .range-slider [type=range]:focus::-ms-fill-upper {
+        background: none;
+        border: 0;
+    }
+
+    .range-slider [type=range]::-moz-range-track {
+        -moz-appearance: none;
+        background: none;
+        border: 0;
+        height: 6px;
+        z-index: -1;
+    }
+
+    .range-slider [type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: #555;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 30px;
+        margin-top: -12px;
+        outline: 0;
+        pointer-events: all;
+        position: relative;
+        width: 30px;
+        z-index: 100;
+    }
+
+
+    .range-slider [type=range]::-ms-thumb {
+        background: #555;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 30px;
+        margin-top: 0;
+        pointer-events: all;
+        position: relative;
+        width: 30px;
+        z-index: 100;
+    }
+
+
+    .range-slider [type=range]::-moz-range-thumb {
+        -moz-appearance: none;
+        background: #555;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 30px;
+        margin-top: -12px;
+        pointer-events: all;
+        position: relative;
+        width: 30px;
+        z-index: 100;
+    }
+
+    .range-slider .output,
+    .range-slider output {
+        background: none;
+        border: none;
+        border-radius: 4px;
+        color: #777777;
+        font-weight: bold;
+        display: inline-block;
+        height: 2.5em;
+        font-size: 15px;
+        left: 50%;
+        line-height: 2.5em;
+        padding: 0 0.75em;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        transform: translate(-50%, 0);
+    }
+
+    .fillter {
+        span.left {
+            color: #bebdbd;
+            text-align: left;
+            display: inline-block;
+            padding-top: 12px;
+        }
+
+        span.right {
+            color: #bebdbd;
+            float: right;
+            padding-top: 12px;
+        }
+    }
+
+    /* --- fillter ------ */
+</style>
+
+<div class="breadcrumb-area bg-gray menuBarTop">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li class="active"><a href="/viewAll"> View All</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="shop-area pt-0 pb-120 section-padding-2">
+    <div class="container-fluid">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-9">
+                <div class="shop-topbar-wrapper">
+                    <div class="shop-topbar-left">
+                        <div class="view-mode nav">
+                            <a class="active" href="#shop-1" data-toggle="tab"><i class="bi bi-grid fa-lg"></i></a>
+                            <a href="#shop-2" data-toggle="tab"><i class="bi bi-list fa-lg"></i></a>
+                        </div>
+                        <p>Showing 1 - 20 of 30 results </p>
+                    </div>
+                    <div class="product-sorting-wrapper">
+                        <div class="product-shorting shorting-style">
+                            <label>View :</label>
+                            <select>
+                                <option value=""> 10 </option>
+                                <option value=""> 15 </option>
+                                <option value=""> 20 </option>
+                            </select>
+                        </div>
+                        <div class="product-show shorting-style">
+                            <label>Sort by :</label>
+                            <select>
+                                <option value="">Default</option>
+                                <option value=""> Name</option>
+                                <option value=""> price</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-bottom-area">
+                    <div class="tab-content jump">
+                        <div id="shop-1" class="tab-pane active">
+                            <div class="row">
+                                {{#each product}}
+                               
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                                    <div class="single-product-wrap mb-35">
+                                        <div class="product-img product-img-zoom mb-15 ">
+                                            <a href="/product-details/{{this._id}}">
+                                                <img src="/User Assets/images/product/{{image.[0]}}"
+                                                    style="height: inherit; width:;" alt="">
+                                            </a>
+                                            <div class="product-action-2 tooltip-style-2">
+                                                <button onclick="addToWishList('{{this._id}}')" title="Wishlist"><i
+                                                        class="bi bi-heart fa-sm"></i></i></button>
+                                                <button title="Quick View" data-toggle="modal"
+                                                    data-target="#exampleModal{{this._id}}"><i
+                                                        class="bi bi-arrows-fullscreen"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap-2 text-center">
+                                            <div class="product-rating-wrap">
+                                                <div class="product-rating">
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star gray"></i>
+                                                </div>
+                                                <span>(2)</span>
+                                            </div>
+                                            <h3><a href="/product-details/{{this._id}}">{{productname}}</a></h3>
+                                            <div class="product-price-2">
+                                                <span>{{price}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap-2 product-content-position text-center">
+                                            <div class="product-rating-wrap">
+                                                <div class="product-rating">
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star gray"></i>
+                                                </div>
+                                                <span>(2)</span>
+                                            </div>
+                                            <h3><a href="/product-details/{{this._id}}">{{productname}}</a></h3>
+                                            <div class="product-price-2">
+                                                <span>{{price}}</span>
+                                            </div>
+                                            <div class="pro-add-to-cart">
+                                                {{!-- <a href="/add-to-cart/{{this._id}}"><button
+                                                        title="Add to Cart">Add To Cart</button></a> --}}
+                                                <button onclick="addToCartDetails('{{this._id}}')" title="Add to Cart">Add To
+                                                    Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{/each}}
+
+
+                            </div>
+                        </div>
+                        {{!-- long view --}}
+                        <div id="shop-2" class="tab-pane">
+                            {{#each product}}
+                            <div class="shop-list-wrap mb-30">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6">
+                                        <div class="product-list-img">
+                                            <a href="/product-details/{{this._id}}">
+                                                <img src="/User Assets/images/product/{{image.[0]}}" alt="Product Style">
+                                            </a>
+                                            <div class="product-list-quickview">
+                                                <button title="Quick View" data-toggle="modal"
+                                                    data-target="#exampleModal{{this._id}}"><i
+                                                        class="bi bi-arrows-fullscreen"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-sm-6">
+                                        <div class="shop-list-content">
+                                            <h3><a href="/product-details/{{this._id}}">{{productname}}</a></h3>
+                                            <div class="pro-list-price">
+                                                <span class="new-price">{{price}}</span>
+                                                <span class="old-price">{{this.actualPrice}}</span>
+                                            </div>
+                                            <div class="product-list-rating-wrap">
+                                                <div class="product-list-rating">
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star"></i>
+                                                    <i class="icon_star gray"></i>
+                                                    <i class="icon_star gray"></i>
+                                                </div>
+                                                <span>(3)</span>
+                                            </div>
+                                            <ul>
+                                              
+                                                <li>Free Delivery</li>
+                                                <li>Specifications :</li>
+                                            </ul>
+                                            
+
+                                            {{!-- <p>{{this.productDescription}}</p> --}}
+                                            <div class="product-list-action">
+                                                <button onclick="addToCartDetails('{{_id}}')" title="Add To Cart"><i
+                                                        class="bi bi-cart2"></i></button>
+                                                <button onclick="addToWishList('{{_id}}')" title="Wishlist"><i
+                                                        class="bi bi-heart fa-sm"></i></button>
+                                                <button title="Compare"><i class="bi bi-arrow-clockwise"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {{/each}}
+
+                        </div>
+                    </div>
+                    {{!-- page next --}}
+                    <div class="pro-pagination-style text-center mt-10">
+                        <ul>
+                            <li><a class="prev" href="#"><i class="bi bi-chevron-left"></i></a></li>
+                            <li><a class="active" href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a class="next" href="#"><i class="bi bi-chevron-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- side portion of view all --}}
+            <div class="col-lg-3">
+                <div class="sidebar-wrapper sidebar-wrapper-mrg-right">
+                    <div class="sidebar-widget mb-40">
+                        <h4 class="sidebar-widget-title">Search </h4>
+                        <div class="sidebar-search">
+                            <div class="input-group md-form form-sm form-2 pl-0">
+                                <input id="searchBoxSide" class="form-control my-0 py-1 red-border" type="text"
+                                    onkeyup="searchSide()" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button onclick="search2()" class="input-group-text red lighten-3 "
+                                        id="basic-text1"><i class="fas fa-search text-grey"
+                                            aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-11" id="dropSide"
+                                style="background-color: white; position: absolute; z-index: 10;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget shop-sidebar-border mb-35 pt-40">
+                        <h4 class="sidebar-widget-title">Categories </h4>
+                        <div class="shop-catigory">
+                            <ul>
+                                <li><a href="/viewAll">View All</a></li>
+                                {{#each Category}}
+                                <li><a href="/viewAll/{{categoryName}}">{{categoryName}}</a></li>
+                                {{/each}}
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <!-- /fillter -->
+                    {{!-- <div class="fillter">
+                        <h4 class="sidebar-widget-title "><b>Price Filter</b> </h4>
+                        <span>Range: <i class="bi bi-currency-rupee"></i> 10,000 - 300,000</span>
+                        <form action="/viewAllByRange" method="get">
+                            <section class="range-slider" id="facet-price-range-slider"
+                                data-options='{"output":{"prefix":""},"maxSymbol":""}'>
+                                {{#if range}}
+                                <input name="range1" value="{{range.min}}" min="10000" max="300000" step="1"
+                                    type="range">
+                                <input name="range2" value="{{range.max}}" min="10000" max="300000" step="1"
+                                    type="range">
+                                {{else}}
+                                <input name="range1" value="10000" min="10000" max="300000" step="1" type="range">
+                                <input name="range2" value="300000" min="10000" max="300000" step="1" type="range">
+                                {{/if}}
+                            </section>
+                            <button type="submit " class="btn btn-dark text-light btn-sm">Filter</button>
+                        </form>
+                    </div> --}}
+
+                    <!-- /fillter -->
+                    {{!-- <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
+                        <h4 class="sidebar-widget-title">Price Filter </h4>
+                        <div class="price-filter">
+                            <span>Range: $100.00 - 1.300.00 </span>
+                            <div id="slider-range"></div>
+                            <div class="price-slider-amount">
+                                <div class="label-input">
+                                    <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                </div>
+                                <button type="button">Filter</button>
+                            </div>
+                        </div>
+                                  
+                    </div> --}}
+
+
+
+
+
+
+                    {{!-- <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
+                        <h4 class="sidebar-widget-title">Refine By </h4>
+                        <div class="sidebar-widget-list">
+                            <ul>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">New <span>5</span></a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">In Stock <span>6</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> --}}
+                    {{!-- <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
+                        <h4 class="sidebar-widget-title">Size </h4>
+                        <div class="sidebar-widget-list">
+                            <ul>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">XL <span>4</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">L <span>5</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">SM <span>6</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">XXL <span>7</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> --}}
+                    {{!-- <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
+                        <h4 class="sidebar-widget-title">Color </h4>
+                        <div class="sidebar-widget-list">
+                            <ul>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">Green <span>7</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">Cream <span>8</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">Blue <span>9</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" value=""> <a href="#">Black <span>3</span> </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> --}}
+                    {{!-- <div class="sidebar-widget shop-sidebar-border pt-40">
+                        <h4 class="sidebar-widget-title">Popular Tags</h4>
+                        <div class="sidebar-widget-tag">
+                            <ul>
+                                <li><a href="#">Clothing</a></li>
+                                <li><a href="#">Accessories</a></li>
+                                <li><a href="#">For Men</a></li>
+                                <li><a href="#">Women</a></li>
+                                <li><a href="#">Fashion</a></li>
+                            </ul>
+                        </div>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+{{#each products}}
+<div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-12 col-sm-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img src="/images/product-img/{{this.image1}}" alt="">
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-7 col-md-6 col-12 col-sm-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>{{this.title}}</h2>
+                            <div class="product-ratting-review-wrap">
+                                <div class="product-ratting-digit-wrap">
+                                    <div class="product-ratting">
+                                        <i class="icon_star"></i>
+                                        <i class="icon_star"></i>
+                                        <i class="icon_star"></i>
+                                        <i class="icon_star"></i>
+                                        <i class="icon_star"></i>
+                                    </div>
+                                    <div class="product-digit">
+                                        <span>5.0</span>
+                                    </div>
+                                </div>
+                                <div class="product-review-order">
+                                    <span>62 Reviews</span>
+                                    <span>242 orders</span>
+                                </div>
+                            </div>
+                            <p>{{this.productDescription}}</p>
+                            <div class="pro-details-price">
+                                <span class="new-price"><i class="bi bi-currency-rupee"></i> {{this.offerPrice}}</span>
+                                <span class="old-price"><i class="bi bi-currency-rupee"></i> {{this.MRP}}</span>
+                            </div>
+                            <div class="pro-details-color-wrap">
+                                <span>Color: {{this.color}}</span>
+
+                            </div>
+                            <div class="pro-details-size">
+                                <span>Brand: {{this.brand}}</span>
+
+                            </div>
+                            {{!-- <div class="pro-details-quality">
+                                <span>Quantity:</span>
+                                <div class="cart-plus-minus">
+                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
+                                </div>
+                            </div> --}}
+                            {{!-- <div class="product-details-meta">
+                                <ul>
+                                    <li><span>Categories:</span> <a href="#">Woman,</a> <a href="#">Dress,</a> <a
+                                            href="#">T-Shirt</a></li>
+                                    <li><span>Tag: </span> <a href="#">Fashion,</a> <a href="#">Mentone</a> , <a
+                                            href="#">Texas</a></li>
+                                </ul>
+                            </div> --}}
+
+                            
+                            <div class="pro-details-action-wrap">
+                                <div class="pro-details-add-to-cart">
+                                    <button title="Add to Cart" onclick="addToCartDetails('{{this._id}}')">Add To Cart </button>
+                                </div>
+                                <div class="pro-details-action">
+                                    <button title="Add to Wishlist" onclick="addToWishList('{{this._id}}')"><i class="icon-heart"></i></button>
+                                    <a title="Add to Compare" href="#"><i class="icon-refresh"></i></a>
+                                    <a class="social" title="Social" href="#"><i class="icon-share"></i></a>
+                                    <div class="product-dec-social">
+                                        <a class="facebook" title="Facebook" href="#"><i
+                                                class="icon-social-facebook"></i></a>
+                                        <a class="twitter" title="Twitter" href="#"><i
+                                                class="icon-social-twitter"></i></a>
+                                        <a class="instagram" title="Instagram" href="#"><i
+                                                class="icon-social-instagram"></i></a>
+                                        <a class="pinterest" title="Pinterest" href="#"><i
+                                                class="icon-social-pinterest"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}} 
+<!-- Modal end -->
+
+
+<script>
+
+    function addToWishList(proId) {
+        $.ajax({
+            url: '/add-to-wishlist/' + proId,
+            method: 'get',
+            success: (response) => {
+                if (response.status) {
+                    let count = $('#wishList-count').html()
+                    console.log("old count", count)
+                    count = parseInt(count) + 1
+                    console.log("added count", count)
+                    $('#wishList-count').html(count)
+                    Swal.fire({
+                        position: 'top-end',
+                        width: 300,
+                        height: 100,
+                        text: "Item Added Wish List",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Please Login ',
+                        text: "Please Login to Add this Item Wish List",
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Continue with Login'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = '/viewAllVerify'
+                        }
+                    })
+                }
+
+            }
+        })
+    }
+
+
+    // fillter 
+
+    (function ($) {
+
+        "use strict";
+
+        var DEBUG = false, // make true to enable debug output
+            PLUGIN_IDENTIFIER = "RangeSlider";
+
+        var RangeSlider = function (element, options) {
+            this.element = element;
+            this.options = options || {};
+            this.defaults = {
+                output: {
+                    prefix: '', // function or string
+                    suffix: '', // function or string
+                    format: function (output) {
+                        return output;
+                    }
+                },
+                change: function (event, obj) { }
+            };
+            // This next line takes advantage of HTML5 data attributes
+            // to support customization of the plugin on a per-element
+            // basis.
+            this.metadata = $(this.element).data('options');
+        };
+
+        RangeSlider.prototype = {
+
+            ////////////////////////////////////////////////////
+            // Initializers
+            ////////////////////////////////////////////////////
+
+            init: function () {
+                if (DEBUG && console) console.log('RangeSlider init');
+                this.config = $.extend(true, {}, this.defaults, this.options, this.metadata);
+
+                var self = this;
+                // Add the markup for the slider track
+                this.trackFull = $('<div class="track track--full"></div>').appendTo(self.element);
+                this.trackIncluded = $('<div class="track track--included"></div>').appendTo(self.element);
+                this.inputs = [];
+
+                $('input[type="range"]', this.element).each(function (index, value) {
+                    var rangeInput = this;
+                    // Add the ouput markup to the page.
+                    rangeInput.output = $('<output>').appendTo(self.element);
+                    // Get the current z-index of the output for later use
+                    rangeInput.output.zindex = parseInt($(rangeInput.output).css('z-index')) || 1;
+                    // Add the thumb markup to the page.
+                    rangeInput.thumb = $('<div class="slider-thumb">').prependTo(self.element);
+                    // Store the initial val, incase we need to reset.
+                    rangeInput.initialValue = $(this).val();
+                    // Method to update the slider output text/position
+                    rangeInput.update = function () {
+                        if (DEBUG && console) console.log('RangeSlider rangeInput.update');
+                        var range = $(this).attr('max') - $(this).attr('min'),
+                            offset = $(this).val() - $(this).attr('min'),
+                            pos = offset / range * 100 + '%',
+                            transPos = offset / range * -100 + '%',
+                            prefix = typeof self.config.output.prefix == 'function' ? self.config.output.prefix.call(self, rangeInput) : self.config.output.prefix,
+                            format = self.config.output.format($(rangeInput).val()),
+                            suffix = typeof self.config.output.suffix == 'function' ? self.config.output.suffix.call(self, rangeInput) : self.config.output.suffix;
+
+                        // Update the HTML
+                        $(rangeInput.output).html(prefix + '' + format + '' + suffix);
+                        $(rangeInput.output).css('left', pos);
+                        $(rangeInput.output).css('transform', 'translate(' + transPos + ',0)');
+
+                        // Update the IE hack thumbs
+                        $(rangeInput.thumb).css('left', pos);
+                        $(rangeInput.thumb).css('transform', 'translate(' + transPos + ',0)');
+
+                        // Adjust the track for the inputs
+                        self.adjustTrack();
+                    };
+
+                    // Send the current ouput to the front for better stacking
+                    rangeInput.sendOutputToFront = function () {
+                        $(this.output).css('z-index', rangeInput.output.zindex + 1);
+                    };
+
+                    // Send the current ouput to the back behind the other
+                    rangeInput.sendOutputToBack = function () {
+                        $(this.output).css('z-index', rangeInput.output.zindex);
+                    };
+
+                    ///////////////////////////////////////////////////
+                    // IE hack because pointer-events:none doesn't pass the 
+                    // event to the slider thumb, so we have to make our own.
+                    ///////////////////////////////////////////////////
+                    $(rangeInput.thumb).on('mousedown', function (event) {
+                        // Send all output to the back
+                        self.sendAllOutputToBack();
+                        // Send this output to the front
+                        rangeInput.sendOutputToFront();
+                        // Turn mouse tracking on
+                        $(this).data('tracking', true);
+                        $(document).one('mouseup', function () {
+                            // Turn mouse tracking off
+                            $(rangeInput.thumb).data('tracking', false);
+                            // Trigger the change event
+                            self.change(event);
+                        });
+                    });
+
+                    // IE hack - track the mouse move within the input range
+                    $('body').on('mousemove', function (event) {
+                        // If we're tracking the mouse move
+                        if ($(rangeInput.thumb).data('tracking')) {
+                            var rangeOffset = $(rangeInput).offset(),
+                                relX = event.pageX - rangeOffset.left,
+                                rangeWidth = $(rangeInput).width();
+                            // If the mouse move is within the input area
+                            // update the slider with the correct value
+                            if (relX <= rangeWidth) {
+                                var val = relX / rangeWidth;
+                                $(rangeInput).val(val * $(rangeInput).attr('max'));
+                                rangeInput.update();
+                            }
+                        }
+                    });
+
+                    // Update the output text on slider change
+                    $(this).on('mousedown input change touchstart', function (event) {
+                        if (DEBUG && console) console.log('RangeSlider rangeInput, mousedown input touchstart');
+                        // Send all output to the back
+                        self.sendAllOutputToBack();
+                        // Send this output to the front
+                        rangeInput.sendOutputToFront();
+                        // Update the output
+                        rangeInput.update();
+                    });
+
+                    // Fire the onchange event 
+                    $(this).on('mouseup touchend', function (event) {
+                        if (DEBUG && console) console.log('RangeSlider rangeInput, change');
+                        self.change(event);
+                    });
+
+                    // Add this input to the inputs array for use later
+                    self.inputs.push(this);
+                });
+
+                // Reset to set to initial values
+                this.reset();
+
+                // Return the instance
+                return this;
+            },
+
+            sendAllOutputToBack: function () {
+                $.map(this.inputs, function (input, index) {
+                    input.sendOutputToBack();
+                });
+            },
+
+            change: function (event) {
+                if (DEBUG && console) console.log('RangeSlider change', event);
+                // Get the values of each input
+                var values = $.map(this.inputs, function (input, index) {
+                    return {
+                        value: parseInt($(input).val()),
+                        min: parseInt($(input).attr('min')),
+                        max: parseInt($(input).attr('max'))
+                    };
+                });
+
+                // Sort the array by value, if we have 2 or more sliders
+                values.sort(function (a, b) {
+                    return a.value - b.value;
+                });
+
+                // call the on change function in the context of the rangeslider and pass the values
+                this.config.change.call(this, event, values);
+            },
+
+            reset: function () {
+                if (DEBUG && console) console.log('RangeSlider reset');
+                $.map(this.inputs, function (input, index) {
+                    $(input).val(input.initialValue);
+                    input.update();
+                });
+            },
+
+            adjustTrack: function () {
+                if (DEBUG && console) console.log('RangeSlider adjustTrack');
+                var valueMin = Infinity,
+                    rangeMin = Infinity,
+                    valueMax = 0,
+                    rangeMax = 0;
+
+                // Loop through all input to get min and max
+                $.map(this.inputs, function (input, index) {
+                    var val = parseInt($(input).val()),
+                        min = parseInt($(input).attr('min')),
+                        max = parseInt($(input).attr('max'));
+
+                    // Get the min and max values of the inputs
+                    valueMin = (val < valueMin) ? val : valueMin;
+                    valueMax = (val > valueMax) ? val : valueMax;
+                    // Get the min and max possible values
+                    rangeMin = (min < rangeMin) ? min : rangeMin;
+                    rangeMax = (max > rangeMax) ? max : rangeMax;
+                });
+
+                // Get the difference if there are 2 range input, use max for one input.
+                // Sets left to 0 for one input and adjust for 2 inputs
+                if (this.inputs.length > 1) {
+                    this.trackIncluded.css('width', (valueMax - valueMin) / (rangeMax - rangeMin) * 100 + '%');
+                    this.trackIncluded.css('left', (valueMin - rangeMin) / (rangeMax - rangeMin) * 100 + '%');
+                } else {
+                    this.trackIncluded.css('width', valueMax / (rangeMax - rangeMin) * 100 + '%');
+                    this.trackIncluded.css('left', '0%');
+                }
+            }
+        };
+
+        RangeSlider.defaults = RangeSlider.prototype.defaults;
+
+        $.fn.RangeSlider = function (options) {
+            if (DEBUG && console) console.log('$.fn.RangeSlider', options);
+            return this.each(function () {
+                var instance = $(this).data(PLUGIN_IDENTIFIER);
+                if (!instance) {
+                    instance = new RangeSlider(this, options).init();
+                    $(this).data(PLUGIN_IDENTIFIER, instance);
+                }
+            });
+        };
+
+    }
+    )(jQuery);
+
+
+    var rangeSlider = $('#facet-price-range-slider');
+    if (rangeSlider.length > 0) {
+        rangeSlider.RangeSlider({
+            output: {
+                format: function (output) {
+                    return output.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                },
+                suffix: function (input) {
+                    return parseInt($(input).val()) == parseInt($(input).attr('max')) ? this.config.maxSymbol : '';
+                }
+            }
+        });
+    }
+
+</script> v
