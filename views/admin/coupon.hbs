@@ -33,7 +33,7 @@
                                     <tr>
                                         <td>{{couponCode}}</td>
                                         <td>{{couponOffer}}</td>
-                                        <td>{{expiryDate}}</td>
+                                        <td>{{formatDate expiryDate "short"}}</td>
                                         <td>
                                             {{#if is_valid}}
                                             <a href="/admin/deactivate-coupon/{{_id}}"

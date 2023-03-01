@@ -29,13 +29,14 @@ user.post('/register',userController.insertUser);
 user.get('/',userController.loadHome);
 user.get('/login',auth.isLogout,userController.loadLogin);
 user.post('/login',userController.verifyLogin);
+user.get('/userotpverify',userController.LoadOtp)
+user.post('/userotpverify',userController.verifyOTP)
 
 user.get('/forgetpassword',auth.isLogout ,userController.forgetPassword);
 user.post('/forgetpassword',userController.resetPassword);
 user.get('/forget',auth.isLogout ,userController.forgetLoad);
 user.post('/forget',userController.forgetVerify);
 
-user.get('/verify',userController.verifymail);
 user.get('/home',auth.isLogin,userController.loadHome);
 user.get('/logout',auth.isLogin,userController.userLogout);
 user.get('/viewAll/:name',userController.loadProducts);  
@@ -60,6 +61,8 @@ user.post('/paypal/place/order',auth.isLogin ,userController.paypalSummary);
 
 user.post('/place-order',auth.isLogin,userController.placeorder);
 user.delete('/cancel-order/:id',auth.isLogin ,userController.cancelOrder);
+user.put('/return-order/:id',auth.isLogin ,userController.ReturnOrder);
+
 user.get('/order-details/:id',auth.isLogin,userController.orderDetails);
 
 user.put('/redeem-coupon',auth.isLogin,userController.redeemCoupon);

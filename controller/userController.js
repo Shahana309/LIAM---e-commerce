@@ -33,7 +33,7 @@ const securePassword = async (password) => {
 
 
 //for send mail 
-const sendverifyMail = async (name, email, User) => {
+const sendverifyMail = async (name, email, OTP, User) => {
     try {
         console.log(User);
         const transporter = nodemailer.createTransport({
@@ -47,7 +47,7 @@ const sendverifyMail = async (name, email, User) => {
             from: 'nagmasayyid@gmail.com',
             to: email,
             subject: 'for verification mail',
-            html: '<p>Hii' + name + ',please click here to <a href= "http://localhost:3000/verify?id= ' + User + '"> verify </a> your email.</p>'
+            html: '<p>Hii' + name + ',Your OTP is ' + OTP + '</p>'
         }
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -75,6 +75,10 @@ const insertUser = async (req, res) => {
     try {
         const secretPassword = await securePassword(req.body.password)
         const checkUser = await User.findOne({ email: req.body.email })
+        function generateOTP() {
+            return Math.floor(100000 + Math.random() * 900000);
+        }
+        const otp = generateOTP();
         if (checkUser == null) {
             const user = new User({
                 name: req.body.name,
@@ -95,9 +99,9 @@ const insertUser = async (req, res) => {
                 //  }).then(message => console.log(message))
                 //    // here you can implement your fallback code
                 //    .catch(error => console.log(error))
-                sendverifyMail(req.body.name, req.body.email, userData._id);
-                res.render('registration', { message: "Your registartion Completed. Please verify your email." })
-
+                const updatedData = await User.updateOne({ email: req.body.email }, { $set: { token: otp } });
+                sendverifyMail(req.body.name, req.body.email, otp, userData._id);
+                res.redirect('/userotpverify?id=' + userData._id);
             } else {
                 res.render('registartion', { error: "Your registration failed." })
             }
@@ -111,11 +115,24 @@ const insertUser = async (req, res) => {
     }
 }
 
-const verifymail = async (req, res) => {
+const verifyOTP = async (req, res) => {
     try {
-        const updateInfo = await User.updateOne({ email: req.query.id }, { $set: { is_verified: 1 } })
-        console.log(updateInfo);
-        res.render('verified')
+        const userData = await User.findOne({ _id: req.query.id });
+        if (req.body.optvalue === userData.token) {
+            const verify = await User.updateOne({
+                email: userData.email
+            }, {
+                $set: {
+                    is_verified: true
+                }
+            });
+            res.render('Login', { message: 'verified Successfully please Login' })
+
+        } else {
+            res.render('otp-page', {
+                error: "invalid otp please check and retry",
+            })
+        }
     } catch (error) {
         console.log(error.message);
     }
@@ -141,17 +158,17 @@ const verifyLogin = async (req, res) => {
             const passwordMatch = await bcrypt.compare(password, userData.password);
             if (passwordMatch) {
                 if (userData.is_verified === 0) {
-                    res.render('login', { error: "Please verify your mail" });
+                    res.render('Login', { error: "Please verify your mail" });
                 } else {
                     req.session.user = userData._id;
                     res.redirect('/home');
                 }
             } else {
-                res.render('login', { error: "Email or Password incorrect" });
+                res.render('Login', { error: "Email or Password incorrect" });
             }
         }
         else {
-            res.render('login', { error: "Email or Password incorrect" });
+            res.render('Login', { error: "Email or Password incorrect" });
         }
     } catch (error) {
         console.log(error.message);
@@ -297,7 +314,7 @@ const profile = async (req, res) => {
             {
                 $match: { userId: ObjectId(req.session.user) },
             }
-        ])
+        ]).sort({ _id: -1 })
         // const orderData = await Order.aggregate([
         //     {
         //         $match: { userId: ObjectId(req.session.user) }
@@ -455,9 +472,9 @@ const AddToCart = async (req, res) => {
                 Cart: ObjectId(req.params.id)
             }
         })
-        if(Cart.matchedCount){
+        if (Cart.matchedCount) {
             res.json('success')
-        }else{
+        } else {
             res.json('error')
         }
 
@@ -577,7 +594,6 @@ const placeorder = async (req, res) => {
         const selectedMethod = req.body.selectedMethod;
         const selectedAdress = req.body.selectedAdress;
         const total = req.body.total;
-        console.log(selectedAdress);
         if (req.body.selectedMethod == 1) {
             res.json({
                 method: "paypal",
@@ -593,6 +609,7 @@ const placeorder = async (req, res) => {
                 selectedAdress,
                 total
             );
+            console.log(checkout);
             if (checkout == "success") res.json("success");
             else res.json("error");
         }
@@ -630,7 +647,24 @@ const cancelOrder = async (req, res) => {
 //         console.log(error.message);
 //     }
 // }
+const ReturnOrder = async (req, res) => {
+    const ReturnOrder = await Order.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: { status: "Returned" } }
+    );
+    if (ReturnOrder) {
+        ReturnOrder.Products.forEach(async (item) => {
 
+            const incrementStockCount = await Product.updateOne(
+                { _id: item._id },
+                { $inc: { quantity: item.quantity } }
+            );
+        })
+
+        res.json("success");
+    } else
+        res.json("error");
+};
 const orderDetails = async (req, res) => {
     try {
         const orderData = await Order.aggregate([{ $match: { orderId: req.params.id } },
@@ -650,9 +684,21 @@ const orderDetails = async (req, res) => {
             }
         }
         ])
-        console.log(orderData);
+        //  const Address = await User.find(
+        //     { "Address._id": orderData.addressId },
+        //     { _id: 0, address: { $elemMatch: { id: orderData.addressId } } }
+        // ).lean()
+        let Address
+        let data = await User.find({ _id: req.session.user }).lean()
+        data[0].Address.forEach((element) => {
+            if (element._id == String(orderData[0]?.addressId))
+                Address = element
+
+        })
         res.render("order-details", {
-            orderDetails: orderData
+            orderDetails: orderData,
+            date: moment(orderData[0].date).format('MMMM Do YYYY'),
+            address: Address
         });
     } catch (error) {
         console.log(error);
@@ -797,12 +843,18 @@ const searchProduct = async (req, res, next) => {
         next(error)
     }
 }
+const LoadOtp = async (req, res) => {
+    try {
+        res.render('otp-page')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 module.exports = {
     loadRegister,
     loadLogin,
     insertUser,
-    verifymail,
     verifyLogin,
     forgetLoad,
     forgetVerify,
@@ -823,6 +875,7 @@ module.exports = {
     Loadcheckout,
     placeorder,
     cancelOrder,
+    ReturnOrder,
     orderDetails,
     paypalCheckout,
     paypalSummary,
@@ -830,5 +883,7 @@ module.exports = {
     loadProducts,
     loadAllProducts,
     userLogout,
-    searchProduct
+    searchProduct,
+    LoadOtp,
+    verifyOTP
 }

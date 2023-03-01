@@ -12,9 +12,12 @@
                             <div class="card-body">
                                 <div class="card-header-2">
                                     <h5>Category Information</h5>
+                                    {{#if error}}
+<h6 class="text-danger text-end">{{error}}</h6>
+{{/if}}
+             
                                 </div>
-
-                                <form action="/admin/add-category" class="theme-form theme-form-2 mega-form"
+                   <form action="/admin/add-category" class="theme-form theme-form-2 mega-form"
                                     method="post" enctype="multipart/form-data">
                                     <div class="mb-4 row align-items-center">
                                         <label class="form-label-title col-sm-3 mb-0">Category Name</label>

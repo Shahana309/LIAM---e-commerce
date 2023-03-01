@@ -265,7 +265,6 @@ const Addproduct = async (req, res) => {
         const productData = await product.save();
         if (productData) {
             res.redirect('/admin/products');
-            console.log(productData);
         }
         else { res.render('add-products', { message: 'Something went Wrong !!' }); }
     }
@@ -402,27 +401,22 @@ const addCategoryLoad = async (req, res) => {
 const addCategory = async (req, res) => {
     try {
         const checkCategory = await Category.findOne({ categoryName: req.body.categoryName })
-        console.log(checkCategory);
         if (checkCategory == null) {
             const { categoryName, categoryOffer } = req.body
             const category = new Category({
-
                 categoryName: categoryName,
                 image: req.file.filename,
                 categoryOffer: categoryOffer
-
             });
             const categoryData = await category.save();
-            if (Category) {
-                res.redirect('/admin/categorylist');
-            }
-            else { res.render('add-category', { error: 'Something went Wrong !!' }); }
-
+                res.redirect('/admin/category-list');
         } else {
             res.render('add-category', { error: 'Category Already Exist', adminData: req.session.admin })
         }
     }
-    catch (error) { console.log(error.message) }
+    catch (error) { 
+        console.log(error.message)
+     }
 }
 
 
@@ -531,7 +525,6 @@ const orderlist = async (req, res) => {
         res.render('order', {
             adminData: req.session.admin,
             orderData,
-            date:moment(orderData[0].date).format('MMMM Do YYYY'),
         })
     } catch (error) {
         console.log(error.message);
@@ -606,7 +599,7 @@ const addCoupon = async (req, res) => {
 //Coupon list
 const couponList = async (req, res) => {
     try {
-        const couponData = await coupon.find().lean();
+        const couponData = await coupon.find().lean().sort({_id:-1});
 
         res.render('coupon', { couponData, adminData: req.session.admin });
     } catch (error) {
